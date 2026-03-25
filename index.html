@@ -190,7 +190,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* 说明文字（新位置：邮箱下方） */
+    /* 说明文字 */
     .description {
       text-align: center;
       color: #6b5a4a;
@@ -379,7 +379,6 @@
         </div>
       </div>
 
-      <!-- 说明文字放在邮箱下方 -->
       <p class="description">
         Don't miss out on the latest news and special content! Sign up for our website now and stay in the loop with every update.
       </p>
@@ -389,7 +388,7 @@
       </p>
 
       <div class="footer">
-        <a href="https://tiktok.com/@yourhandle" target="_blank" rel="noopener noreferrer" class="tiktok-link" aria-label="Follow us on TikTok">
+        <a href="https://www.tiktok.com/@idiomgo" target="_blank" rel="noopener noreferrer" class="tiktok-link" aria-label="Follow us on TikTok">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
           </svg>
@@ -675,7 +674,7 @@
       animate();
     })();
 
-    // Form handling
+    // ==================== 邮箱提交 ====================
     (function() {
       const form = document.getElementById('email-form');
       const emailInput = document.getElementById('email-input');
@@ -683,6 +682,8 @@
       const formArea = document.getElementById('form-area');
       const successArea = document.getElementById('success-area');
       const errorText = document.getElementById('error-text');
+
+      const API_URL = 'https://script.google.com/macros/s/AKfycbxHNzDpl3y-Q5msZB35kkUUC_CFfxdxezKS0eN4SQya0FEn7i75er63hhqmsj0KsW3jog/exec';
 
       const spinnerSvg = `<svg class="spinner" fill="none" viewBox="0 0 24 24" style="width:20px;height:20px;">
         <circle style="opacity:0.25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
@@ -704,15 +705,12 @@
         errorText.style.display = 'none';
 
         try {
-          await fetch(
-            'https://script.google.com/macros/s/AKfycbwIoNZxy_idDeE7vOXdGBST7k5RuGZ9dTNEH3ASE1wlaj8OwQkdgOTTC3CRYCnwsHO71Q/exec',
-            {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: email, source: 'coming_soon_tiktok' })
-            }
-          );
+          await fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, source: 'coming_soon_tiktok' })
+          });
           formArea.style.display = 'none';
           successArea.style.display = 'block';
         } catch (err) {
