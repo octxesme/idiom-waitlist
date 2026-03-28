@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Master Idimo | Learn Chinese Idioms</title>
+  <title>IdimoGo | Learn Chinese Idioms</title>
   <style>
     * {
       margin: 0;
@@ -18,7 +18,6 @@
       cursor: default;
     }
 
-    /* Canvas 背景层 */
     #shader-canvas {
       position: fixed;
       top: 0;
@@ -29,7 +28,6 @@
       display: block;
     }
 
-    /* 光晕叠加层（鼠标跟随） */
     #glow-overlay {
       position: fixed;
       top: 0;
@@ -52,13 +50,11 @@
       padding: 48px 24px;
     }
 
-    /* 卡片悬停效果 */
     .card {
       width: 100%;
       max-width: 680px;
       background: rgba(255, 250, 240, 0.88);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 245, 225, 0.8);
       border-radius: 32px;
       padding: 48px 56px;
@@ -105,7 +101,7 @@
 
     .title-line {
       display: block;
-      font-size: 44px;
+      font-size: 56px;
       font-weight: 700;
       color: #3e2a1f;
       line-height: 1.2;
@@ -117,7 +113,6 @@
       color: #bc6c25;
     }
 
-    /* 表单区域 */
     .form-container {
       position: relative;
       margin-bottom: 24px;
@@ -190,7 +185,39 @@
       to { transform: rotate(360deg); }
     }
 
-    /* 说明文字 */
+    .consent-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .consent-container input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #bc6c25;
+    }
+
+    .consent-container label {
+      color: #6b5a4a;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .consent-container .privacy-link {
+      color: #bc6c25;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .consent-container .privacy-link:hover {
+      color: #9b561d;
+    }
+
     .description {
       text-align: center;
       color: #6b5a4a;
@@ -200,14 +227,6 @@
       max-width: 480px;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    .privacy-text {
-      text-align: center;
-      color: #8b7a66;
-      font-size: 12px;
-      line-height: 1.4;
-      margin-bottom: 32px;
     }
 
     .success-container {
@@ -251,7 +270,6 @@
       margin-bottom: 16px;
     }
 
-    /* 底部：TikTok + 日期 同一行 */
     .footer {
       display: flex;
       align-items: center;
@@ -267,7 +285,7 @@
       backdrop-filter: blur(8px);
       border: 1px solid rgba(188, 108, 37, 0.2);
       border-radius: 50%;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
@@ -292,12 +310,89 @@
       letter-spacing: 0.025em;
     }
 
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: rgba(255, 250, 240, 0.98);
+      backdrop-filter: blur(20px);
+      border-radius: 28px;
+      max-width: 560px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 32px 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(188, 108, 37, 0.3);
+    }
+
+    .modal-content h2 {
+      font-size: 24px;
+      color: #3e2a1f;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .modal-content h3 {
+      font-size: 18px;
+      color: #bc6c25;
+      margin: 20px 0 10px 0;
+      font-weight: 500;
+    }
+
+    .modal-content p {
+      color: #5c4b34;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .modal-content ul {
+      margin: 10px 0 10px 20px;
+      color: #5c4b34;
+      font-size: 14px;
+    }
+
+    .modal-content li {
+      margin-bottom: 6px;
+    }
+
+    .close-modal {
+      background: #bc6c25;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+
+    .close-modal:hover {
+      background: #9b561d;
+    }
+
     @media (max-width: 680px) {
       .card {
         padding: 32px 24px;
       }
       .title-line {
-        font-size: 34px;
+        font-size: 44px;
       }
       .form-container {
         max-width: 100%;
@@ -315,6 +410,10 @@
       }
       .footer {
         gap: 16px;
+        flex-wrap: wrap;
+      }
+      .consent-container label {
+        font-size: 12px;
       }
     }
 
@@ -323,11 +422,14 @@
         padding: 24px 20px;
       }
       .title-line {
-        font-size: 28px;
+        font-size: 36px;
       }
       .badge {
         padding: 6px 18px;
         font-size: 12px;
+      }
+      .modal-content {
+        padding: 24px 20px;
       }
     }
   </style>
@@ -343,8 +445,7 @@
       </div>
 
       <h1>
-        <span class="title-line">Master Idimo</span>
-        <span class="title-line">Like a Native</span>
+        <span class="title-line">IdimoGo</span>
       </h1>
 
       <div id="form-area">
@@ -355,7 +456,6 @@
               id="email-input"
               class="email-input"
               placeholder="Enter your email"
-              required
             />
             <button type="submit" id="submit-btn" class="submit-btn">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -363,6 +463,14 @@
               </svg>
             </button>
           </div>
+          
+          <div class="consent-container">
+            <input type="checkbox" id="consentCheckbox">
+            <label for="consentCheckbox">
+              I agree to the <span id="consentPrivacyLink" class="privacy-link">Privacy Policy</span>
+            </label>
+          </div>
+          
           <p id="error-text" class="error-text" style="display: none;"></p>
         </form>
       </div>
@@ -383,23 +491,70 @@
         Don't miss out on the latest news and special content! Sign up for our website now and stay in the loop with every update.
       </p>
 
-      <p class="privacy-text">
-        By subscribing, you agree to receive updates. We respect your privacy. Unsubscribe anytime.
-      </p>
-
       <div class="footer">
         <a href="https://www.tiktok.com/@idiomgo" target="_blank" rel="noopener noreferrer" class="tiktok-link" aria-label="Follow us on TikTok">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
           </svg>
         </a>
-        <p class="launch-date">Launching Summer 2026</p>
+        <span class="launch-date">Launching Summer 2026</span>
       </div>
     </div>
   </div>
 
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <h2>Privacy Policy</h2>
+      <p><strong>Last updated:</strong> March 28, 2026</p>
+      
+      <h3>1. Information We Collect</h3>
+      <p>When you sign up for updates, we collect:</p>
+      <ul>
+        <li><strong>Email address</strong> – to send you updates and announcements</li>
+        <li><strong>Source</strong> – to understand where our subscribers come from</li>
+        <li><strong>Timestamp</strong> – to record when you subscribed</li>
+      </ul>
+      
+      <h3>2. How We Use Your Information</h3>
+      <p>We use your email address solely to:</p>
+      <ul>
+        <li>Notify you about product launches, updates, and new features</li>
+        <li>Send occasional educational content related to Chinese idioms</li>
+        <li>Improve our service based on subscriber interest</li>
+      </ul>
+      <p>We do <strong>not</strong> sell, rent, or share your personal information with third parties.</p>
+      
+      <h3>3. Data Storage</h3>
+      <p>Your information is securely stored in Google Sheets, accessible only to the site administrators. We retain your data for as long as you remain subscribed. If you unsubscribe, your data will be deleted within 30 days.</p>
+      
+      <h3>4. Your Rights (GDPR / CCPA)</h3>
+      <p>Depending on your location, you have the right to:</p>
+      <ul>
+        <li><strong>Access</strong> – request a copy of the data we hold about you</li>
+        <li><strong>Rectification</strong> – correct any inaccurate information</li>
+        <li><strong>Erasure</strong> – request that we delete your data</li>
+        <li><strong>Opt-out</strong> – unsubscribe from communications at any time</li>
+      </ul>
+      <p>To exercise these rights, contact us at <strong>esmelioct@gmail.com</strong>.</p>
+      
+      <h3>5. Cookies</h3>
+      <p>We currently do not use cookies. In the future, we may use analytics cookies to improve our service. You will be notified if this changes.</p>
+      
+      <h3>6. Children's Privacy</h3>
+      <p>Our service is not directed to individuals under 13. We do not knowingly collect personal information from children.</p>
+      
+      <h3>7. Changes to This Policy</h3>
+      <p>We may update this privacy policy from time to time. The latest version will always be available on this page.</p>
+      
+      <h3>8. Contact Us</h3>
+      <p>If you have any questions about this privacy policy or your data, please contact:<br>
+      <strong>esmelioct@gmail.com</strong></p>
+      
+      <button class="close-modal" onclick="closePrivacyModal()">Close</button>
+    </div>
+  </div>
+
   <script>
-    // ==================== 鼠标光晕跟随 ====================
     const glowOverlay = document.getElementById('glow-overlay');
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth) * 100;
@@ -408,15 +563,27 @@
       glowOverlay.style.setProperty('--mouse-y', `${y}%`);
     });
 
-    // ==================== WebGL Shader Background ====================
+    const modal = document.getElementById('privacyModal');
+    const consentPrivacyLink = document.getElementById('consentPrivacyLink');
+
+    function openPrivacyModal() {
+      modal.classList.add('active');
+    }
+
+    function closePrivacyModal() {
+      modal.classList.remove('active');
+    }
+
+    consentPrivacyLink.addEventListener('click', openPrivacyModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closePrivacyModal();
+    });
+
     (function() {
       const canvas = document.getElementById('shader-canvas');
       const gl = canvas.getContext('webgl2', { alpha: false, antialias: true });
       
-      if (!gl) {
-        console.error('WebGL2 not supported');
-        return;
-      }
+      if (!gl) return;
 
       const config = {
         proportion: 0.45,
@@ -674,11 +841,11 @@
       animate();
     })();
 
-    // ==================== 邮箱提交 ====================
     (function() {
       const form = document.getElementById('email-form');
       const emailInput = document.getElementById('email-input');
       const submitBtn = document.getElementById('submit-btn');
+      const consentCheckbox = document.getElementById('consentCheckbox');
       const formArea = document.getElementById('form-area');
       const successArea = document.getElementById('success-area');
       const errorText = document.getElementById('error-text');
@@ -698,7 +865,28 @@
         e.preventDefault();
         
         const email = emailInput.value.trim();
-        if (!email) return;
+        
+        // 自定义验证：隐私政策
+        if (!consentCheckbox.checked) {
+          errorText.textContent = 'Please agree to the Privacy Policy to continue.';
+          errorText.style.display = 'block';
+          return;
+        }
+        
+        // 自定义验证：邮箱
+        if (!email) {
+          errorText.textContent = 'Please enter your email address.';
+          errorText.style.display = 'block';
+          return;
+        }
+        
+        // 简单的邮箱格式验证
+        const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          errorText.textContent = 'Please enter a valid email address.';
+          errorText.style.display = 'block';
+          return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.innerHTML = spinnerSvg;
